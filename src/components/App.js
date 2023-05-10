@@ -41,8 +41,22 @@ export class App extends Component {
   filterContact = (name, filter) => {
     let nameLow = name.toLocaleLowerCase();
     let filterLow = filter.toLocaleLowerCase();
-    return (nameLow.indexOf(filterLow)>= 0)
+    return (nameLow.indexOf(filterLow) >= 0)
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('phonebook', JSON.stringify(this.state.contacts))
+    }
+  }
+
+  componentDidMount() {
+    const book = localStorage.getItem('phonebook');
+    if (book) {
+      const parsePhonebook = JSON.parse(book);
+      this.setState({contacts: parsePhonebook})
+    }
+  }
   
   render() {
 
